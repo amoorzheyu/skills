@@ -1,0 +1,42 @@
+---
+description: Trigger when the user says to commit code or current changes, then generate one concise Chinese Conventional Commit message from staged and unstaged Git changes
+alwaysApply: false
+---
+
+# Conventional Commit Message
+
+When the user expresses an intent to commit code or current changes, such as `提交代码`, `提交一下`, `帮我提交`, `commit code`, `commit changes`, `git commit`, `生成提交信息`, or asks to generate, write, suggest, or produce a git commit message:
+
+1. Confirm the current directory is inside a Git work tree with `git rev-parse --is-inside-work-tree`.
+2. Inspect changes with `git status --short`.
+3. If any unstaged, deleted, renamed, or untracked worktree changes exist, run `git add -A` before analysis.
+4. Analyze only staged changes with `git diff --cached --stat`, `git diff --cached --name-status`, and `git diff --cached`.
+5. Do not run `git commit` unless explicitly asked to create the commit.
+6. Output exactly one line and nothing else. Treat natural-language requests like `提交代码`, `提交一下`, or `帮我提交` as requests to produce the commit message unless the user explicitly asks to run `git commit`.
+
+Message format:
+
+```text
+<type>: <description>
+```
+
+Allowed types:
+
+- `feat`: 新增功能
+- `fix`: 修复问题
+- `docs`: 文档修改
+- `style`: 代码格式调整（不影响功能）
+- `refactor`: 代码重构（无功能变化）
+- `perf`: 性能优化
+- `test`: 测试用例修改
+- `chore`: 构建过程或辅助工具修改
+- `ci`: CI/CD 配置修改
+- `build`: 构建配置或依赖修改
+
+Rules:
+
+- The type must be one of the allowed types.
+- Include exactly one space after the colon.
+- Write the description in concise Chinese.
+- Do not add punctuation at the end.
+- Do not add scope, body, footer, markdown, quotes, or explanations.
