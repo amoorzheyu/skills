@@ -1,0 +1,27 @@
+---
+description: Trigger when the user asks to push, upload, or sync local commits to the remote repository after rebasing on upstream
+alwaysApply: false
+---
+
+# Git Push
+
+Use this rule when the user says phrases such as `推送代码`, `上传代码`, `提交到仓库`, `同步到远端`, `帮我 push 一下`, `push code`, or `git push`.
+
+Workflow:
+
+1. Confirm the directory is a Git work tree with `git rev-parse --is-inside-work-tree`.
+2. Inspect `git status --short`. If uncommitted changes exist, stop and tell the user to commit or stash them first. Do not auto-commit, auto-stash, or discard work.
+3. Resolve current branch and upstream with `git branch --show-current` and `git rev-parse --abbrev-ref --symbolic-full-name @{u}`. If no upstream exists, stop and ask the user to set or specify one.
+4. Run `git fetch --prune`.
+5. Compare upstream and local with `git rev-list --left-right --count @{u}...HEAD`; interpret output as `<behind> <ahead>`.
+6. If `<behind>` is greater than `0`, run `git pull --rebase`. If `<behind>` is `0`, do not pull.
+7. During rebase conflicts, read the conflicted hunks and surrounding code. Resolve directly only when the correct intent is clear and compatible. If multiple valid resolutions exist, ask the user to choose among 2-4 concrete options with short tradeoffs. Do not choose one side blindly or invent logic.
+8. If there are no local commits ahead after rebase, report that there is nothing to push.
+9. Run `git push`. If rejected because remote advanced again, repeat fetch/compare/rebase once, then retry push once.
+10. Report whether rebase happened and whether push succeeded.
+
+Safety rules:
+
+- Never use `git reset --hard`, `git checkout -- <file>`, `git clean`, `git rebase --abort`, or force push unless explicitly requested.
+- Never create commits in this workflow.
+- Do not run project builds, compilers, tests, or syntax checks unless explicitly requested.

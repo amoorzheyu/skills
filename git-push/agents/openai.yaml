@@ -1,0 +1,4 @@
+interface:
+  display_name: "Git Push"
+  short_description: "拉取远端变更并 rebase 后推送本地提交到仓库"
+  default_prompt: "Use $git-push to rebase local commits onto the remote branch and push them safely."

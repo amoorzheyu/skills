@@ -1,0 +1,4 @@
+interface:
+  display_name: "Git Commit"
+  short_description: "根据当前 Git 改动生成中文规范信息并创建提交"
+  default_prompt: "Use $git-commit when I say 提交代码 to stage current changes and create a Chinese Conventional Commit."

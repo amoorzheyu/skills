@@ -1,4 +1,0 @@
-interface:
-  display_name: "Conventional Commit Message"
-  short_description: "根据 Git 暂存区和工作区改动生成中文规范提交信息"
-  default_prompt: "Use $conventional-commit-message when I say 提交代码 to stage current changes and output one Chinese Conventional Commit message."

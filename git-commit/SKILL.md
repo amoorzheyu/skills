@@ -1,9 +1,9 @@
 ---
-name: conventional-commit-message
-description: Generate a single Chinese Conventional Commits git commit message from the current staged and unstaged working tree changes. Use when the user expresses an intent to commit code or current changes, such as "提交代码", "提交一下", "帮我提交", "commit code", "commit changes", "git commit", "生成提交信息", or asks to create, write, generate, or suggest a git commit message. The workflow stages unstaged and untracked worktree changes before analyzing the staged diff, then outputs only the final commit message.
+name: git-commit
+description: Create a Git commit for current staged and unstaged worktree changes using a concise Chinese Conventional Commits message. Use when the user expresses an intent to commit code or current changes, such as "提交代码", "提交一下", "帮我提交", "commit code", "commit changes", or "git commit". The workflow stages all worktree changes, analyzes the staged diff, generates a valid Chinese Conventional Commit message, and runs git commit with that message.
 ---
 
-# Conventional Commit Message
+# Git Commit
 
 ## Workflow
 
@@ -19,11 +19,11 @@ description: Generate a single Chinese Conventional Commits git commit message f
    ```
    If there are no staged, unstaged, or untracked changes, stop and report that there are no changes to commit.
 
-3. Stage all worktree changes before generating the message:
+3. Stage all worktree changes:
    ```bash
    git add -A
    ```
-   This is required when unstaged, deleted, renamed, or untracked files exist. Do not run `git commit` unless the user explicitly asks to create the commit.
+   This is required when unstaged, deleted, renamed, or untracked files exist.
 
 4. Analyze only the staged changes:
    ```bash
@@ -33,7 +33,14 @@ description: Generate a single Chinese Conventional Commits git commit message f
    ```
    For very large diffs, use the stat and name-status output first, then inspect the most relevant file diffs needed to identify the primary intent.
 
-5. Output exactly one final commit message line and nothing else. Treat natural-language requests like `提交代码`, `提交一下`, or `帮我提交` as requests to produce the commit message unless the user explicitly asks to run `git commit`.
+5. Generate exactly one commit message using the rules below.
+
+6. Create the commit:
+   ```bash
+   git commit -m "<message>"
+   ```
+
+7. Report the created commit message concisely. Do not add unrelated explanation.
 
 ## Message Rules
 
@@ -47,7 +54,7 @@ Use exactly this format:
 - Include one space after the colon.
 - Write `<description>` in concise Chinese.
 - Do not end with punctuation.
-- Do not include a scope, body, footer, bullet list, markdown, quotes, or explanations.
+- Do not include a scope, body, footer, bullet list, markdown, quotes, or explanations in the commit message.
 
 ## Type Selection
 
